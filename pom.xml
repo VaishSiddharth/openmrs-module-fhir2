@@ -39,7 +39,8 @@
 		<module>api-2.1</module>
         <module>api-2.2</module>
 		<module>omod</module>
-    </modules>
+		<module>omod-dstu3</module>
+	</modules>
 
 	<repositories>
 		<repository>
@@ -191,6 +192,11 @@
 			<dependency>
 				<groupId>ca.uhn.hapi.fhir</groupId>
 				<artifactId>hapi-fhir-structures-r4</artifactId>
+				<version>${hapifhirVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>hapi-fhir-converter</artifactId>
 				<version>${hapifhirVersion}</version>
 			</dependency>
 			<dependency>
