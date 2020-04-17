@@ -19,7 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ForwardingFilter implements Filter {
+	
+	private static final Logger log = LoggerFactory.getLogger(ForwardingFilter.class);
 	
 	@Override
 	public void init(FilterConfig filterConfig) {
@@ -33,7 +38,25 @@ public class ForwardingFilter implements Filter {
 		String contextPath = ((HttpServletRequest) req).getContextPath();
 		String prefix = contextPath + "/ws/fhir2/";
 		if (requestURI.startsWith(prefix)) {
-			String newURI = requestURI.replace(prefix, "/ms/fhir2Servlet/");
+			String[] requestPath = requestURI.split(prefix, 1);
+			String maybeVersion = requestPath[1].split("/", 1)[0];
+			
+			String replacement;
+			switch (maybeVersion) {
+				case "R3":
+					prefix += "/" + maybeVersion + "/";
+					replacement = "/ms/fhir2Dstu3Servlet";
+					break;
+				case "R4":
+					prefix += "/" + maybeVersion + "/";
+					replacement = "/ms/fhir2Servlet";
+					break;
+				default:
+					replacement = "/ms/fhir2Servlet";
+					break;
+			}
+			
+			String newURI = requestURI.replace(prefix, replacement);
 			req.getRequestDispatcher(newURI).forward(req, res);
 		} else {
 			chain.doFilter(req, res);
