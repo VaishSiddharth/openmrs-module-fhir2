@@ -53,9 +53,9 @@ public abstract class BaseFhirService<T extends IAnyResource, U extends OpenmrsO
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	protected final Class<? super T> resourceClass;
-
-    private boolean handlesOpenmrsMetadata;
-
+	
+	private boolean handlesOpenmrsMetadata;
+	
 	@Autowired
 	@Qualifier("fhirR4")
 	@Getter(AccessLevel.PROTECTED)
@@ -117,7 +117,7 @@ public abstract class BaseFhirService<T extends IAnyResource, U extends OpenmrsO
 	public T update(@Nonnull String uuid, @Nonnull T updatedResource) {
 		return update(uuid, updatedResource, null, false);
 	}
-
+	
 	@Override
 	public T update(@Nonnull String uuid, @Nonnull T updatedResource, RequestDetails requestDetails,
 	        boolean createIfNotExists) {
@@ -145,7 +145,7 @@ public abstract class BaseFhirService<T extends IAnyResource, U extends OpenmrsO
 			if (!handlesOpenmrsMetadata || !createIfNotExists) {
 				throw resourceNotFound(uuid);
 			}
-
+			
 			//We need to communicate to the resource provider whether this operation resulted in a creation or an
 			//update but the return type provides no way, so we use the user data map on the request details object
 			//for this purpose as the recommended way, please refer to the javadocs of RequestDetails.getUserData().
@@ -284,5 +284,5 @@ public abstract class BaseFhirService<T extends IAnyResource, U extends OpenmrsO
 		return new ResourceNotFoundException(
 		        "Resource of type " + resourceClass.getSimpleName() + " with ID " + uuid + " is not known");
 	}
-
+	
 }

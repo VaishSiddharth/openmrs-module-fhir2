@@ -76,19 +76,19 @@ public class MedicationFhirResourceProvider extends BaseUpsertFhirResourceProvid
 	public MethodOutcome createMedication(@ResourceParam Medication medication) {
 		return FhirProviderUtils.buildCreate(fhirMedicationService.create(medication));
 	}
-
-    @Override
-    protected MethodOutcome doUpsert(IdType id, Medication medication, RequestDetails requestDetails,
-                                     boolean createIfNotExists) {
-        if (id == null || id.getIdPart() == null) {
-            throw new InvalidRequestException("id must be specified to update");
-        }
-
-        medication.setId(id.getIdPart());
-
-        return FhirProviderUtils
-                .buildUpdate(fhirMedicationService.update(id.getIdPart(), medication, requestDetails, createIfNotExists));
-    }
+	
+	@Override
+	protected MethodOutcome doUpsert(IdType id, Medication medication, RequestDetails requestDetails,
+	        boolean createIfNotExists) {
+		if (id == null || id.getIdPart() == null) {
+			throw new InvalidRequestException("id must be specified to update");
+		}
+		
+		medication.setId(id.getIdPart());
+		
+		return FhirProviderUtils
+		        .buildUpdate(fhirMedicationService.update(id.getIdPart(), medication, requestDetails, createIfNotExists));
+	}
 	
 	@Patch
 	public MethodOutcome patchMedication(@IdParam IdType id, PatchTypeEnum patchType, @ResourceParam String body,
