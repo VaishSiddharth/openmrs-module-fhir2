@@ -15,6 +15,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.openmrs.Concept;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptMapType;
+import org.openmrs.module.fhir2.FhirConstants;
 import org.openmrs.module.fhir2.api.FhirConceptSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,12 +38,12 @@ public class MedicationQuantityCodingTranslatorImpl extends BaseCodingTranslator
 		
 		Coding coding = null;
 		
-		//		if (concept.getConceptMappings() != null && !concept.getConceptMappings().isEmpty()) {
-		//			coding = getSameAsCodingForSystem(concept, FhirConstants.RX_NORM_SYSTEM_URI);
-		//			if (coding == null) {
-		//				coding = getSameAsCodingForSystem(concept, FhirConstants.SNOMED_SYSTEM_URI);
-		//			}
-		//		}
+		if (concept.getConceptMappings() != null && !concept.getConceptMappings().isEmpty()) {
+			coding = getSameAsCodingForSystem(concept, FhirConstants.RX_NORM_SYSTEM_URI);
+			if (coding == null) {
+				coding = getSameAsCodingForSystem(concept, FhirConstants.SNOMED_SYSTEM_URI);
+			}
+		}
 		
 		if (coding == null) {
 			coding = createCoding(null, concept.getUuid(), concept);
